@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Evita que el sonido y los íconos de notificación se eliminen al compilar en release -->
+<resources xmlns:tools="http://schemas.android.com/tools"
+    tools:keep="@raw/alerta,@drawable/ic_notificacion,@drawable/ic_logo_notificacion" />
