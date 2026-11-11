@@ -20,6 +20,7 @@ CREATE TABLE Usuarios (
     id_usuario            INT AUTO_INCREMENT PRIMARY KEY,
     nombre_completo       VARCHAR(100) NOT NULL,
     correo_institucional  VARCHAR(150) NOT NULL,
+    email_verificado      BOOLEAN NOT NULL DEFAULT FALSE,
     password_hash         VARCHAR(255) NOT NULL,
     telefono              VARCHAR(20)  NULL,
     foto_url              VARCHAR(255) NULL,
@@ -29,6 +30,19 @@ CREATE TABLE Usuarios (
     fecha_registro        DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT uq_usuarios_correo UNIQUE (correo_institucional),
     CONSTRAINT chk_usuarios_calificacion CHECK (calificacion_promedio BETWEEN 1.00 AND 5.00)
+) ENGINE=InnoDB;
+
+-- Códigos temporales de verificación de correo. Se guarda únicamente el hash.
+CREATE TABLE Verificaciones_Email (
+    id_usuario       INT PRIMARY KEY,
+    codigo_hash      CHAR(64) NOT NULL,
+    expira           DATETIME NOT NULL,
+    enviado_en       DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    intentos         TINYINT UNSIGNED NOT NULL DEFAULT 0,
+    envios_ventana   TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    ventana_envios   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_verificaciones_usuario FOREIGN KEY (id_usuario)
+        REFERENCES Usuarios(id_usuario) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 -- ---------------------------------------------------------------------

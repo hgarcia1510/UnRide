@@ -35,7 +35,7 @@ class PerfilScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(color: esquema.surfaceContainerHigh, borderRadius: BorderRadius.circular(20)),
-                  child: Calificacion(u.calificacion, tamano: 14),
+                  child: Calificacion(u.calificacion, tamano: 14, totalResenas: u.totalResenas),
                 ),
                 const SizedBox(height: 6),
                 Text(u.correo, style: tema.textTheme.bodyMedium?.copyWith(color: esquema.onSurfaceVariant)),

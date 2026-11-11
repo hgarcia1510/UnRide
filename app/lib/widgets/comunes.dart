@@ -87,12 +87,16 @@ Future<bool> confirmar(BuildContext context, String titulo, String mensaje,
 }
 
 class Calificacion extends StatelessWidget {
-  const Calificacion(this.valor, {super.key, this.tamano = 14});
+  const Calificacion(this.valor, {super.key, this.tamano = 14, this.totalResenas});
   final double valor;
   final double tamano;
+  final int? totalResenas;
 
   @override
   Widget build(BuildContext context) {
+    if (totalResenas == 0) {
+      return Text('Sin reseñas', style: TextStyle(fontSize: tamano, fontWeight: FontWeight.w600));
+    }
     return Row(mainAxisSize: MainAxisSize.min, children: [
       Icon(Icons.star_rounded, size: tamano + 2, color: Theme.of(context).colorScheme.onSurface),
       const SizedBox(width: 2),
@@ -257,7 +261,8 @@ class TarjetaViaje extends StatelessWidget {
                   ]),
                 ),
                 const SizedBox(width: 8),
-                if (viaje.choferCalificacion != null) Calificacion(viaje.choferCalificacion!, tamano: 13),
+                if (viaje.choferCalificacion != null)
+                  Calificacion(viaje.choferCalificacion!, tamano: 13, totalResenas: viaje.choferTotalResenas),
               ] else if (viaje.modeloColor != null)
                 Flexible(
                   child: Row(children: [

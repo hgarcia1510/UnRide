@@ -69,6 +69,13 @@ class ApiClient {
         'telefono': telefono,
       });
 
+  Future<Map<String, dynamic>> verificarCorreo(String correo, String codigo) async =>
+      await _send('POST', '/auth/verificar-correo', {'correo': correo, 'codigo': codigo});
+
+  Future<void> reenviarVerificacion(String correo) async {
+    await _send('POST', '/auth/reenviar-verificacion', {'correo': correo});
+  }
+
   Future<List<String>> dominiosInstitucionales() async {
     final data = await _send('GET', '/config');
     return List<String>.from(data['dominios_institucionales'] as List);

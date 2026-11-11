@@ -139,7 +139,8 @@ class _ViajeDetalleScreenState extends State<ViajeDetalleScreen> {
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(v.esMio ? 'Tú conduces' : (v.choferNombre ?? 'Chofer'), style: tema.textTheme.titleMedium),
                 const SizedBox(height: 2),
-                if (v.choferCalificacion != null) Calificacion(v.choferCalificacion!),
+                if (v.choferCalificacion != null)
+                  Calificacion(v.choferCalificacion!, totalResenas: v.choferTotalResenas),
               ]),
             ),
             if (v.choferTelefono != null)
@@ -211,7 +212,7 @@ class _ViajeDetalleScreenState extends State<ViajeDetalleScreen> {
                   Text(s.pasajeroNombre, style: Theme.of(context).textTheme.titleMedium),
                   const SizedBox(height: 2),
                   Row(children: [
-                    Calificacion(s.pasajeroCalificacion, tamano: 12),
+                    Calificacion(s.pasajeroCalificacion, tamano: 12, totalResenas: s.pasajeroTotalResenas),
                     if (s.pasajeroTelefono != null && s.estado == 'Aceptada') ...[
                       const SizedBox(width: 10),
                       Flexible(child: Text(s.pasajeroTelefono!, overflow: TextOverflow.ellipsis)),

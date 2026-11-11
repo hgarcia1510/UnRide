@@ -8,6 +8,7 @@ import '../state/auth_state.dart';
 import '../widgets/comunes.dart';
 import '../widgets/logo.dart';
 import 'registro_screen.dart';
+import 'verificar_correo_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -48,6 +49,28 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _enviando = true);
     await intentar(context, () => context.read<AuthState>().login(_correo.text.trim(), _password.text));
     if (mounted) setState(() => _enviando = false);
+  }
+
+  Future<void> _reenviarVerificacion() async {
+    final correo = _correo.text.trim();
+    if (!correo.contains('@')) {
+      mostrarMensaje(context, 'Escribe tu correo para recibir un código.', error: true);
+      return;
+    }
+    setState(() => _enviando = true);
+    try {
+      await context.read<AuthState>().reenviarVerificacion(correo);
+      if (!mounted) return;
+      mostrarMensaje(context, 'Si la cuenta necesita verificación, enviamos un código.');
+      await Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => VerificarCorreoScreen(correo: correo)),
+      );
+    } catch (e) {
+      if (mounted) mostrarMensaje(context, e.toString(), error: true);
+    } finally {
+      if (mounted) setState(() => _enviando = false);
+    }
   }
 
   /// Si el link público del servidor cambió, se pega aquí el nuevo (sin reinstalar la app).
@@ -184,6 +207,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                       SizedBox(width: 8),
                                       Icon(Icons.arrow_forward_rounded),
                                     ]),
+                            ),
+                            const SizedBox(height: 4),
+                            TextButton(
+                              onPressed: _enviando ? null : _reenviarVerificacion,
+                              child: const Text('¿Necesitas verificar tu correo?'),
                             ),
                             const SizedBox(height: 16),
                             Row(children: [

@@ -45,7 +45,7 @@ class MisReservasScreen extends StatelessWidget {
                           const SizedBox(width: 8),
                           Flexible(child: Text(r.choferNombre, overflow: TextOverflow.ellipsis)),
                           const SizedBox(width: 6),
-                          Calificacion(r.choferCalificacion),
+                          Calificacion(r.choferCalificacion, totalResenas: r.choferTotalResenas),
                           const Spacer(),
                           Text(r.placas, style: const TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1)),
                         ]),

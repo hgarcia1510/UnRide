@@ -63,7 +63,9 @@ router.delete('/me/foto', asyncHandler(async (req, res) => {
 // Perfil público + reseñas recibidas
 router.get('/:id', asyncHandler(async (req, res) => {
   const [rows] = await pool.query(
-    'SELECT id_usuario, nombre_completo, foto_url, calificacion_promedio, fecha_registro FROM Usuarios WHERE id_usuario = ?',
+    `SELECT id_usuario, nombre_completo, foto_url, calificacion_promedio, fecha_registro,
+            (SELECT COUNT(*) FROM Resenas WHERE id_evaluado = Usuarios.id_usuario) AS total_resenas
+       FROM Usuarios WHERE id_usuario = ?`,
     [req.params.id]
   );
   if (!rows[0]) throw new HttpError(404, 'Usuario no encontrado');

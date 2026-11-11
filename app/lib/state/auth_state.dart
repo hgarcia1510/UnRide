@@ -46,18 +46,25 @@ class AuthState extends ChangeNotifier {
     await _guardar(res['token'] as String, Usuario.fromJson(res['usuario']));
   }
 
-  /// Regresa un mensaje si la cuenta quedó pendiente de validación manual.
-  Future<String?> registro({
+  Future<void> registro({
     required String nombre,
     required String correo,
     required String password,
     String? telefono,
   }) async {
-    final res = await api.registro(nombre: nombre, correo: correo, password: password, telefono: telefono);
+    await api.registro(nombre: nombre, correo: correo, password: password, telefono: telefono);
+  }
+
+  /// Confirma el correo y abre la sesión cuando la cuenta puede entrar.
+  /// Regresa un mensaje si queda pendiente de validación manual.
+  Future<String?> verificarCorreo(String correo, String codigo) async {
+    final res = await api.verificarCorreo(correo, codigo);
     if (res['pendiente'] == true) return res['mensaje'] as String;
     await _guardar(res['token'] as String, Usuario.fromJson(res['usuario']));
     return null;
   }
+
+  Future<void> reenviarVerificacion(String correo) => api.reenviarVerificacion(correo);
 
   Future<void> refrescarPerfil() async {
     usuario = await api.miPerfil();

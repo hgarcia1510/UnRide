@@ -28,6 +28,13 @@ fi
 mysql uniraite < "$DESTINO/database/migracion_003_ubicacion_viaje.sql"
 echo "    003 ubicación del chofer: lista"
 
+if [ "$(mysql -N -e "SELECT COUNT(*) FROM information_schema.COLUMNS WHERE TABLE_SCHEMA='uniraite' AND TABLE_NAME='Usuarios' AND COLUMN_NAME='email_verificado'")" = "0" ]; then
+  mysql uniraite < "$DESTINO/database/migracion_004_verificacion_email.sql"
+  echo "    004 verificaciÃ³n de correo: aplicada"
+else
+  echo "    004 verificaciÃ³n de correo: ya estaba"
+fi
+
 echo "==> Reiniciando API"
 systemctl restart uniraite-api
 sleep 2

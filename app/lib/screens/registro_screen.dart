@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../state/auth_state.dart';
 import '../widgets/comunes.dart';
+import 'verificar_correo_screen.dart';
 
 class RegistroScreen extends StatefulWidget {
   const RegistroScreen({super.key});
@@ -48,25 +49,18 @@ class _RegistroScreenState extends State<RegistroScreen> {
     setState(() => _enviando = true);
     final auth = context.read<AuthState>();
     try {
-      final pendiente = await auth.registro(
+      await auth.registro(
         nombre: _nombre.text.trim(),
         correo: _correo.text.trim(),
         password: _password.text,
         telefono: _telefono.text.trim().isEmpty ? null : _telefono.text.trim(),
       );
       if (!mounted) return;
-      if (pendiente != null) {
-        await showDialog(
-          context: context,
-          builder: (c) => AlertDialog(
-            icon: const Icon(Icons.hourglass_top),
-            title: const Text('Cuenta en revisión'),
-            content: Text(pendiente),
-            actions: [FilledButton(onPressed: () => Navigator.pop(c), child: const Text('Entendido'))],
-          ),
-        );
-      }
-      if (mounted) Navigator.pop(context);
+      final resultado = await Navigator.push<bool>(
+        context,
+        MaterialPageRoute(builder: (_) => VerificarCorreoScreen(correo: _correo.text.trim())),
+      );
+      if (mounted && (auth.autenticado || resultado == false)) Navigator.pop(context);
     } catch (e) {
       if (mounted) mostrarMensaje(context, e.toString(), error: true);
     } finally {

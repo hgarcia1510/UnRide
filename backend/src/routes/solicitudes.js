@@ -9,7 +9,9 @@ router.get('/mias', asyncHandler(async (req, res) => {
     `SELECT s.id_solicitud, s.estado_solicitud, s.fecha_solicitud,
             v.id_viaje, v.punto_origen, v.punto_destino, v.fecha_hora_salida, v.estado_viaje,
             v.asientos_disponibles, u.nombre_completo AS chofer_nombre,
-            u.calificacion_promedio AS chofer_calificacion, u.foto_url AS chofer_foto, ve.modelo_color, ve.placas
+            u.calificacion_promedio AS chofer_calificacion, u.foto_url AS chofer_foto,
+            (SELECT COUNT(*) FROM Resenas r WHERE r.id_evaluado = u.id_usuario) AS chofer_total_resenas,
+            ve.modelo_color, ve.placas
        FROM Solicitudes_Asiento s
        JOIN Viajes v     ON v.id_viaje = s.id_viaje
        JOIN Usuarios u   ON u.id_usuario = v.id_chofer

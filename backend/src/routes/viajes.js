@@ -6,6 +6,7 @@ const { notificar, notificarRutaCoincidente } = require('../services/notificacio
 
 const SELECT_VIAJE = `
   SELECT v.*, u.nombre_completo AS chofer_nombre, u.calificacion_promedio AS chofer_calificacion, u.foto_url AS chofer_foto,
+         (SELECT COUNT(*) FROM Resenas r WHERE r.id_evaluado = u.id_usuario) AS chofer_total_resenas,
          ve.modelo_color, ve.placas, ve.capacidad_maxima
     FROM Viajes v
     JOIN Usuarios  u  ON u.id_usuario   = v.id_chofer
@@ -61,7 +62,8 @@ router.get('/:id', asyncHandler(async (req, res) => {
     [solicitudes] = await pool.query(
       `SELECT s.id_solicitud, s.id_pasajero, s.estado_solicitud, s.fecha_solicitud,
               u.nombre_completo AS pasajero_nombre, u.calificacion_promedio AS pasajero_calificacion, u.foto_url AS pasajero_foto,
-              ${esChofer ? 'u.telefono' : 'NULL'} AS pasajero_telefono
+              ${esChofer ? "CASE WHEN s.estado_solicitud = 'Aceptada' THEN u.telefono ELSE NULL END" : 'NULL'} AS pasajero_telefono,
+              (SELECT COUNT(*) FROM Resenas r WHERE r.id_evaluado = u.id_usuario) AS pasajero_total_resenas
          FROM Solicitudes_Asiento s JOIN Usuarios u ON u.id_usuario = s.id_pasajero
         WHERE s.id_viaje = ? ${esChofer ? '' : "AND s.estado_solicitud = 'Aceptada'"}
         ORDER BY FIELD(s.estado_solicitud, 'Pendiente','Aceptada','Rechazada','Cancelada'), s.fecha_solicitud`,

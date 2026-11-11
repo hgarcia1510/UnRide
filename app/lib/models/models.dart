@@ -83,6 +83,7 @@ class Solicitud {
     required this.estado,
     required this.pasajeroNombre,
     required this.pasajeroCalificacion,
+    this.pasajeroTotalResenas = 0,
     this.pasajeroTelefono,
     this.pasajeroFoto,
   });
@@ -92,6 +93,7 @@ class Solicitud {
   final String estado; // Pendiente | Aceptada | Rechazada | Cancelada
   final String pasajeroNombre;
   final double pasajeroCalificacion;
+  final int pasajeroTotalResenas;
   final String? pasajeroTelefono;
   final String? pasajeroFoto;
 
@@ -101,6 +103,7 @@ class Solicitud {
         estado: j['estado_solicitud'] ?? 'Pendiente',
         pasajeroNombre: j['pasajero_nombre'] ?? '',
         pasajeroCalificacion: _double(j['pasajero_calificacion']),
+        pasajeroTotalResenas: _int(j['pasajero_total_resenas']),
         pasajeroTelefono: j['pasajero_telefono'],
         pasajeroFoto: j['pasajero_foto'],
       );
@@ -126,6 +129,7 @@ class Viaje {
     this.notas,
     this.choferNombre,
     this.choferCalificacion,
+    this.choferTotalResenas = 0,
     this.choferTelefono,
     this.choferFoto,
     this.modeloColor,
@@ -151,6 +155,7 @@ class Viaje {
   final String? notas;
   final String? choferNombre;
   final double? choferCalificacion;
+  final int choferTotalResenas;
   final String? choferTelefono;
   final String? choferFoto;
   final String? modeloColor;
@@ -178,6 +183,7 @@ class Viaje {
       notas: j['notas'],
       choferNombre: j['chofer_nombre'],
       choferCalificacion: j['chofer_calificacion'] == null ? null : _double(j['chofer_calificacion']),
+      choferTotalResenas: _int(j['chofer_total_resenas']),
       choferTelefono: j['chofer_telefono'],
       choferFoto: j['chofer_foto'],
       modeloColor: j['modelo_color'],
@@ -207,6 +213,7 @@ class Reserva {
     required this.estadoViaje,
     required this.choferNombre,
     required this.choferCalificacion,
+    this.choferTotalResenas = 0,
     this.choferFoto,
     required this.modeloColor,
     required this.placas,
@@ -221,6 +228,7 @@ class Reserva {
   final String estadoViaje;
   final String choferNombre;
   final double choferCalificacion;
+  final int choferTotalResenas;
   final String? choferFoto;
   final String modeloColor;
   final String placas;
@@ -235,6 +243,7 @@ class Reserva {
         estadoViaje: j['estado_viaje'] ?? '',
         choferNombre: j['chofer_nombre'] ?? '',
         choferCalificacion: _double(j['chofer_calificacion']),
+        choferTotalResenas: _int(j['chofer_total_resenas']),
         choferFoto: j['chofer_foto'],
         modeloColor: j['modelo_color'] ?? '',
         placas: j['placas'] ?? '',
