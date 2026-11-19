@@ -185,6 +185,7 @@ class _FotoPerfilState extends State<_FotoPerfil> {
     final auth = context.read<AuthState>();
     try {
       // Se reduce en el teléfono para que suba rápido (máx. 800 px, calidad 82).
+      // Modificaciones para aparecer en git
       final archivo = await ImagePicker().pickImage(source: origen, maxWidth: 800, maxHeight: 800, imageQuality: 82);
       if (archivo == null) return;
       setState(() => _subiendo = true);
