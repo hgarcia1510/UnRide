@@ -25,6 +25,7 @@ class PerfilScreen extends StatelessWidget {
       onRefresh: () => auth.refrescarPerfil().catchError((_) {}),
       child: ListView(padding: const EdgeInsets.only(bottom: 32), children: [
         // Encabezado: nombre grande + calificación + avatar
+        // Nuevos cambios
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
           child: Row(children: [
@@ -169,6 +170,7 @@ class PerfilScreen extends StatelessWidget {
 }
 
 /// Foto de perfil con botón de cámara; al tocarla permite cambiarla o quitarla.
+/// otro comentario
 class _FotoPerfil extends StatefulWidget {
   const _FotoPerfil({required this.usuarioNombre, this.fotoUrl});
   final String usuarioNombre;
